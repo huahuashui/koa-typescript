@@ -1,0 +1,25 @@
+{
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
+    "compilerOptions": {
+        "removeComments": true,
+        "importHelpers": true,
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
+        "module": "esnext",
+        "target": "es5",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "allowJs": true,
+        "lib": [
+            "dom",
+            "es2017"
+        ],
+        "sourceMap": true,
+        "pretty": true
+    }
+}
