@@ -3,6 +3,8 @@
         "src/**/*.ts"
     ],
     "exclude": [
+        "bin",
+        "build",
         "node_modules"
     ],
     "compilerOptions": {
