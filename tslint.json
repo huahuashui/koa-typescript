@@ -76,16 +76,16 @@
             "property-declaration": "onespace",
             "variable-declaration": "onespace"
         }
-    ],
-    "no-implicit-dependencies": [
-        true,
-        [
-            "ele-ui"
-        ]
-    ],
-    "no-submodule-imports": [
-        true,
-        "ele-ui"
     ]
+//    "no-implicit-dependencies": [
+//        true,
+//        [
+//            "ele-ui"
+//        ]
+//    ],
+//    "no-submodule-imports": [
+//        true,
+//        "ele-ui"
+//    ]
 }
 // https://youtrack.jetbrains.com/_persistent/Capture(34).PNG?file=74-550923&c=false&updated=0

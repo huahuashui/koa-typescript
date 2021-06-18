@@ -2,7 +2,7 @@ import {Context, Next} from 'koa';
 import Router from "koa-router";
 
 // controller
-import HomeController from '../controller/homeController';
+import HomeController from '../../controller/homeController';
 
 export default class Home {
 

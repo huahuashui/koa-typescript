@@ -4,7 +4,7 @@ import bodyParser from 'koa-bodyparser';
 import helmet from 'koa-helmet';
 import koaStatic from 'koa-static';
 import favicon from 'koa-favicon';
-import RouterMain from './serverRouter';
+import RouterMain from './router/server';
 import interceptorMain from './interceptor';
 import {Config} from './config';
 
