@@ -1,11 +1,13 @@
 import Router from "koa-router";
-import home from "./home";
+import UserRouter from "./userRouter";
 
 // 加载路由配置
 export default class RouterMain {
+
+    // 路由初始化
     public init(router: Router) {
-        [home].forEach(item => {
-            new item(router);
+        [UserRouter].forEach(RouterClass => {
+            new RouterClass(router);
         })
     }
 }
