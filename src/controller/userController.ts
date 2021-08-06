@@ -1,11 +1,13 @@
 import UserService from '../service/userService';
 import {Context, Next} from "koa";
+import {Config} from "../Config";
+import {HttpUtil} from "../utils/HttpUtil";
 
 export default class UserController {
     public static service = new UserService();
 
     // 组装用户信息和用户权益接口数据
-    public static loginIn(ctx: Context, next: Next) {
+    public static async loginIn(ctx: Context, next: Next) {
         ctx.body = {
             code: 200,
             data: {
@@ -16,7 +18,7 @@ export default class UserController {
     }
 
     // 组装用户信息和用户权益接口数据
-    public static loginOut(ctx: Context, next: Next) {
+    public static async loginOut(ctx: Context, next: Next) {
         ctx.body = {
             code: 200,
             data: null,
@@ -25,7 +27,7 @@ export default class UserController {
     }
 
     // 组装用户信息和用户权益接口数据
-    public static getUserInfo(ctx: Context, next: Next) {
+    public static async getUserInfo(ctx: Context, next: Next) {
         // 获取token
         const token = ctx.req.headers.Authrization as string;
         // 未登录
@@ -54,5 +56,15 @@ export default class UserController {
                 message: 'success'
             }
         })
+    }
+
+    // 测试请求java数据
+    public static async getJavaData(ctx: Context, next: Next): Promise<any> {
+        const response = await UserController.service.getJavaData();
+        ctx.body = {
+            code: 200,
+            data: response.data,
+            message: 'success'
+        };
     }
 }

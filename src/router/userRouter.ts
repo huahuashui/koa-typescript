@@ -8,17 +8,30 @@ export default class UserRouter {
     constructor(router: Router) {
         // 登录
         router.post(`${UserRouter.URL}/loginIn`, async (ctx: Context, next: Next) => {
-            UserController.loginIn(ctx, next);
+            await UserController.loginIn(ctx, next).catch(err => {
+                ctx.body = err;
+            });
         });
 
         // 登出
         router.post(`${UserRouter.URL}/loginOut`, async (ctx: Context, next: Next) => {
-            UserController.loginOut(ctx, next);
+            await UserController.loginOut(ctx, next).catch(err => {
+                ctx.body = err;
+            });
         });
 
         // 获取用户信息
         router.get(`${UserRouter.URL}/getUserInfo`, async (ctx: Context, next: Next) => {
-            UserController.getUserInfo(ctx, next);
+            await UserController.getUserInfo(ctx, next).catch(err => {
+                ctx.body = err;
+            });
+        });
+
+        // 获取用户信息
+        router.get(`${UserRouter.URL}/test`, async (ctx: Context, next: Next) => {
+            await UserController.getJavaData(ctx, next).catch(err => {
+                ctx.body = err;
+            });
         });
     }
 }
