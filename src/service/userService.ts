@@ -1,4 +1,3 @@
-import {Config} from "../Config";
 import {HttpUtil} from "../utils/HttpUtil";
 
 export default class UserService {
@@ -26,7 +25,6 @@ export default class UserService {
 
     // 测试数据请求
     public async getJavaData(): Promise<any> {
-        const linkUrl = `${Config.FDS_SERVER_URL}/market/nodeManage/getChildNodeBySiteAndTemrinal`;
         const params = {
             terminal: 0,
             // 站点：办公-0 教育-1 建筑-2 全站-3 主站-4 合同站-5 ppt站-6 合同通-7
@@ -34,6 +32,6 @@ export default class UserService {
             // 层级深度
             level: 2
         }
-        return await HttpUtil.post(linkUrl, params);
+        return await HttpUtil.post('/market/nodeManage/getChildNodeBySiteAndTemrinal', params);
     }
 }

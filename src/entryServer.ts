@@ -28,7 +28,7 @@ function linkStart() {
     // app.use(helmet());
     // 设置Content Security Policy，防止XSS攻击。
     // app.use(helmet.contentSecurityPolicy());
-    app.use(helmet.dnsPrefetchControl());
+    // app.use(helmet.dnsPrefetchControl());
     app.use(helmet.expectCt());
     app.use(helmet.frameguard());
     app.use(helmet.hidePoweredBy());
@@ -50,7 +50,7 @@ function linkStart() {
     app.use(router.allowedMethods());
     // 应用级错误捕获
     app.on('error', (err: Error, ctx: Context) => {
-        console.error('Error starting server', err);
+        console.log('Error starting server', err);
     });
     // 在端口3000监听:
     app.listen(Config.PORT, () => {

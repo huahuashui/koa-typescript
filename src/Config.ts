@@ -11,6 +11,5 @@ export const Config = {
     TIME_OUT: 2000,
 
     // 后台服务地址
-    FDS_SERVER_URL: "http://dev.ejunshi.com/gateway",
-    BCS_SERVER_URL: "http://dev.ejunshi.com/gateway/pc/"
+    GATEWAY_SERVER_URL: "https://dev.ejunshi.com/gateway"
 }

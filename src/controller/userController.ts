@@ -60,11 +60,11 @@ export default class UserController {
 
     // 测试请求java数据
     public static async getJavaData(ctx: Context, next: Next): Promise<any> {
-        const response = await UserController.service.getJavaData();
-        ctx.body = {
-            code: 200,
-            data: response.data,
-            message: 'success'
-        };
+        try {
+            const body = await UserController.service.getJavaData();
+            ctx.body = body;
+        } catch (err) {
+            ctx.body = err;
+        }
     }
 }

@@ -8,6 +8,7 @@
     "compilerOptions": {
         "removeComments": true,
         "importHelpers": true,
+        "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "module": "esnext",
