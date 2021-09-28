@@ -2,19 +2,7 @@ import axios, {AxiosError, AxiosResponse} from "axios";
 import KeepAliveAgent from './KeepAliveAgent';
 import {Config} from '../Config';
 import ErrorCode from '../enum/ErrorCode';
-
-// 接口响应异常时的返回体
-class CustomError {
-    private code: number | string;
-    private data: any;
-    private message: string = 'error';
-
-    constructor(code: number, error: Error, message?: string) {
-        this.code = code;
-        this.data = error;
-        this.message = message
-    }
-}
+import {CustomResponse} from "./CustomResponse";
 
 // 请求工具方法
 export class HttpUtil {
@@ -60,17 +48,17 @@ export class HttpUtil {
         try {
             if (!error && response) {
                 const body = response.data;
-                if (body && body.code == ErrorCode.OK) {
+                if (body && body.code === ErrorCode.OK) {
                     resolve(body);
                 } else {
-                    reject(new CustomError((body && body.code) || ErrorCode.ERROR_BACK_SERVER, error));
+                    reject(new CustomResponse((body && body.code) || ErrorCode.ERROR_BACK_SERVER, error));
                 }
             } else {
                 // 这里分很多中情况, 404 timeout 等,因为前端不关心这些, 所以暂定为未知错误
-                reject(new CustomError((response && response.status) || ErrorCode.ERROR_BACK_SERVER, error));
+                reject(new CustomResponse((response && response.status) || ErrorCode.ERROR_BACK_SERVER, error));
             }
         } catch (e) {
-            reject(new CustomError(ErrorCode.ERROR_NODEJS_ERROR, e));
+            reject(new CustomResponse(ErrorCode.ERROR_NODEJS_ERROR, e));
         }
     }
 }

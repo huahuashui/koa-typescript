@@ -1,7 +1,7 @@
 // 错误码定义
 export default {
     // 正常
-    OK: 0,
+    OK: '0',
     // 没有权限
     NO_AUTHORIZATION: 401,
     // 当前接口未找到

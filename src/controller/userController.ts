@@ -1,29 +1,21 @@
 import UserService from '../service/userService';
 import {Context, Next} from "koa";
-import {Config} from "../Config";
-import {HttpUtil} from "../utils/HttpUtil";
+import ErrorCode from "../enum/ErrorCode";
+import {CustomResponse} from "../utils/CustomResponse";
 
 export default class UserController {
     public static service = new UserService();
 
     // 组装用户信息和用户权益接口数据
     public static async loginIn(ctx: Context, next: Next) {
-        ctx.body = {
-            code: 200,
-            data: {
+        ctx.body = new CustomResponse(ErrorCode.OK, {
                 token: '1234'
-            },
-            message: 'success'
-        }
+            });
     }
 
     // 组装用户信息和用户权益接口数据
     public static async loginOut(ctx: Context, next: Next) {
-        ctx.body = {
-            code: 200,
-            data: null,
-            message: 'success'
-        }
+        ctx.body = new CustomResponse(ErrorCode.OK, null);
     }
 
     // 组装用户信息和用户权益接口数据
@@ -32,11 +24,7 @@ export default class UserController {
         const token = ctx.req.headers.Authrization as string;
         // 未登录
         if (!token) {
-            ctx.body = {
-                code: 401,
-                data: null,
-                message: 'success'
-            }
+            ctx.body = new CustomResponse(ErrorCode.NO_AUTHORIZATION, null);
             return;
         }
         // 已登录
@@ -46,15 +34,11 @@ export default class UserController {
         ]).then(resArr => {
             const userRes = resArr[0];
             const rightsRes = resArr[1];
-            ctx.body = {
-                code: 200,
-                data: {
-                    ...userRes.data,
-                    ...rightsRes.data,
-                    token: ctx.req.headers.Authrization
-                },
-                message: 'success'
-            }
+            ctx.body = new CustomResponse(ErrorCode.NO_AUTHORIZATION, {
+                ...userRes.data,
+                ...rightsRes.data,
+                token: ctx.req.headers.Authrization
+            })
         })
     }
 
