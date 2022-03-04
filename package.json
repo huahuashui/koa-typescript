@@ -23,7 +23,8 @@
         "koa-favicon": "^2.1.0",
         "koa-helmet": "^6.0.0",
         "koa-router": "^10.0.0",
-        "koa-static": "^5.0.0"
+        "koa-static": "^5.0.0",
+        "log4js": "^6.4.2"
     },
     "devDependencies": {
         "@babel/cli": "^7.7.4",
@@ -49,6 +50,7 @@
         "@types/koa-helmet": "^6.0.1",
         "@types/koa-router": "^7.4.1",
         "@types/koa-static": "^4.0.2",
+        "@types/log4js": "^2.3.5",
         "autoprefixer": "^9.7.2",
         "babel-helper-vue-jsx-merge-props": "^2.0.3",
         "babel-loader": "^8.0.6",

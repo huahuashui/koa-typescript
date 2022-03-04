@@ -11,7 +11,7 @@ const config = require('../config');
 // ts配置
 const tsConfig = require.resolve('../tsconfig.json');
 
-console.log('编译时的环境配置', process.env.BUILD_ENV)
+// console.log('编译时的环境配置', process.env.BUILD_ENV)
 
 module.exports = {
     mode: 'production',

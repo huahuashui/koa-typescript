@@ -9,6 +9,10 @@ module.exports = {
         userTokenKey: "Authrization",
         // 超时时间
         timeout: 10000,
+        // 站点
+        site: 0,
+        // 终端
+        terminal: 0
     },
     // 本地环境
     local: {

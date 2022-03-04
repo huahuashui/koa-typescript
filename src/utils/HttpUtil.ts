@@ -1,7 +1,7 @@
 // import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 //
 // import KeepAliveAgent from './KeepAliveAgent';
-// import Config from '../../config';
+// import config from '../../config';
 // import ErrorCode from '../enum/ErrorCode';
 // import { CustomResponse } from './CustomResponse';
 //
@@ -9,7 +9,7 @@
 //
 // // 添加拦截器
 // const axiosInstance = axios.create({
-//     timeout: Config.common.timeout,
+//     timeout: config.common.timeout,
 //     httpAgent: KeepAliveAgent.getHttpAgent(),
 //     httpsAgent: KeepAliveAgent.getHttpsAgent()
 // });
@@ -18,7 +18,7 @@
 // export class HttpUtil {
 //     // 根据不同环境获取后台接口服务器地址
 //     // @ts-ignore
-//     public static serverUrl: string = Config[process.env.BUILD_ENV].serverUrl;
+//     public static serverUrl: string = config[process.env.BUILD_ENV].serverUrl;
 //
 //     public static get<T = any> (linkUrl: string, params: object, timeout?: number): Promise<T> {
 //         return new Promise((resolve, reject) => {

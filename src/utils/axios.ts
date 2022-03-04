@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ResponseResult } from '@@/types/common/ResponseResult';
-import Config from '@@/config';
+import config from '@@/config';
 import ErrorCode from '@/enum/ErrorCode';
 import KeepAliveAgent from '@/utils/KeepAliveAgent';
 import { CustomResponse } from '@/utils/CustomResponse';
@@ -9,23 +9,23 @@ import { CustomResponse } from '@/utils/CustomResponse';
 const axiosInstance = axios.create({
     // 根据不同环境获取后台接口服务器地址
     // @ts-ignore
-    baseURL: Config[process.env.BUILD_ENV].serverUrl,
-    timeout: Config.common.timeout,
+    baseURL: config[process.env.BUILD_ENV].serverUrl,
+    timeout: config.common.timeout,
     httpAgent: KeepAliveAgent.getHttpAgent(),
     httpsAgent: KeepAliveAgent.getHttpsAgent()
 });
 
 // 添加一个请求拦截器
-axiosInstance.interceptors.request.use((config) => {
+axiosInstance.interceptors.request.use((axiosConfig) => {
     // @ts-ignore
 
-    console.log('http请求', config.method, config.url, config.params, config.data);
+    console.log('http请求', axiosConfig.method, axiosConfig.url, axiosConfig.params, axiosConfig.data);
 
     // 在请求发出之前进行一些操作
-    config.headers[Config.common.userTokenKey] = 'token';
+    axiosConfig.headers[config.common.userTokenKey] = 'token';
     // 追加请求头
-    config.headers['Request-Site'] = 1;
-    return config;
+    axiosConfig.headers['Request-Site'] = 1;
+    return axiosConfig;
 }, (error) => {
     console.error('http请求错误', error);
     // Do something with request error
@@ -52,11 +52,11 @@ export default class HttpUtil {
      * get请求
      * @param url       请求地址
      * @param params    请求参数
-     * @param config    请求配置
+     * @param axiosConfig    请求配置
      */
-    public static get<T = any> (url: string, params: object, config?: AxiosRequestConfig): Promise<ResponseResult<T>> {
+    public static get<T = any> (url: string, params: object, axiosConfig?: AxiosRequestConfig): Promise<ResponseResult<T>> {
         return new Promise((resolve, reject) => {
-            axiosInstance.get(url, { ...config, params })
+            axiosInstance.get(url, { ...axiosConfig, params })
                          .then((response: AxiosResponse<ResponseResult<T>>) => {
                              HttpUtil.success(resolve, reject, response);
                          })
@@ -70,24 +70,22 @@ export default class HttpUtil {
      * post请求
      * @param url       请求地址
      * @param params    请求参数
-     * @param config    请求配置
+     * @param axiosConfig    请求配置
      */
-    public static post<T = any> (url: string, params: object, config?: AxiosRequestConfig): Promise<ResponseResult<T>> {
+    public static post<T = any> (url: string, params: object, axiosConfig?: AxiosRequestConfig): Promise<ResponseResult<T>> {
         return new Promise((resolve, reject) => {
-            axiosInstance.post(url, params, config)
+            axiosInstance.post(url, params, axiosConfig)
                          .then((response: AxiosResponse<ResponseResult<T>>) => {
                              HttpUtil.success<T>(resolve, reject, response);
                          })
                          .catch((error) => {
                              HttpUtil.fail(resolve, reject, error);
-                             // HttpUtil.handlePromise(config)
                          });
         });
     }
 
     // 请求成功
     private static success<T> (resolve: Function, reject: Function, response: AxiosResponse<ResponseResult<T>>) {
-        // console.log('请求成功', response);
         try {
             if (response && response.data && response.data.code === ErrorCode.OK) {
                 resolve(response.data);

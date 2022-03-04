@@ -1,7 +1,7 @@
-import Koa, {Context, Next} from "koa";
+import Koa, { Context, Next } from 'koa';
+import customLog4js from '@/customLog4js';
 
 export default class InterceptorMain {
-
     // 忽略不拦截的请求
     private static IGNORE_URL_List: string[] = [];
 
@@ -10,7 +10,7 @@ export default class InterceptorMain {
      * @param url
      * @return {boolean}
      */
-    private static isIgnore(url: string) {
+    private static isIgnore (url: string) {
         let result = false;
         if (!url) return result;
         const ignoreUrlList = InterceptorMain.IGNORE_URL_List;
@@ -24,14 +24,11 @@ export default class InterceptorMain {
         return result;
     }
 
-    constructor(app: Koa) {
-        this.activate(app);
+    private static activate (app: Koa): void {
+        app.use(customLog4js.connectLogger(customLog4js.getLogger('NODE-HTTP')));
     }
 
-    private activate(app: Koa): void {
-        app.use(async (ctx: Context, next: Next) => {
-            console.log(`Node-HTTP 请求start ${ctx.request.method} ${ctx.request.url}...`);
-            await next();
-        });
+    constructor (app: Koa) {
+        InterceptorMain.activate(app);
     }
 }

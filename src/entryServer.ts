@@ -4,15 +4,16 @@ import bodyParser from 'koa-bodyparser';
 import helmet from 'koa-helmet';
 import koaStatic from 'koa-static';
 import favicon from 'koa-favicon';
-
-import Config from '@@/config';
+import config from '@@/config';
 import RouterMain from '@/router';
 import interceptorMain from '@/interceptor';
+import customLog4js from '@/customLog4js';
 
 function linkStart () {
-    // 创建一个Koa对象表示web app本身:d
+    // 创建一个Koa对象
     const app = new Koa();
     const router = new Router();
+    const appLogger = customLog4js.getLogger('APP');
     // 静态资源暴露 todo
     app.use(koaStatic('./static', {
         // 默认为true  访问的文件为index.html  可以修改为别的文件名或者false
@@ -43,19 +44,19 @@ function linkStart () {
     // 拦截器
     new interceptorMain(app);
     // 加载路由配置
-    new RouterMain().init(router);
-    // add router middleware:
-    app.use(router.routes());
-    // 当请求出错时的处理逻辑
-    app.use(router.allowedMethods());
+    new RouterMain(app, router);
     // 应用级错误捕获
     app.on('error', (err: Error, ctx: Context) => {
-        console.log(`${process.env.BUILD_ENV}服务启动失败`, err);
+        appLogger.error({
+            message: `Node运行报错: ${ err && err.message }`,
+            stack: err && err.stack
+        });
     });
-    console.log('Node服务中环境标识和配置', process.env.BUILD_ENV, Config);
     // 端口监听
-    app.listen(Config.common.port, Config.common.host, () => {
-        console.log(`${process.env.BUILD_ENV}服务启动成功${Config.common.host}:${ Config.common.port }`);
+    app.listen(config.common.port, config.common.host, () => {
+        appLogger.info({
+            message: `Node启动成功${ process.env.BUILD_ENV }: ${ config.common.host }:${ config.common.port }`
+        });
     });
 }
 
