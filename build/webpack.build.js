@@ -6,8 +6,12 @@ const HappyPack = require('happypack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
+// 不同环境配置
 const config = require('../config');
+// ts配置
 const tsConfig = require.resolve('../tsconfig.json');
+
+console.log('编译时的环境配置', process.env.BUILD_ENV)
 
 module.exports = {
     mode: 'production',
@@ -24,6 +28,10 @@ module.exports = {
         extensions: ['.js', '.json', '.ts', 'tsx'],
         alias: {
             // ...config.alias,
+            // 根目录
+            '@@': path.resolve(__dirname, '../'),
+            // src目录
+            '@': path.resolve(__dirname, '../src')
         }
     },
     externals: nodeExternals(),
@@ -40,7 +48,7 @@ module.exports = {
         ],
         splitChunks: {
             chunks: "all", // 在做代码分割时，只对异步代码生效，写成all的话，同步异步代码都会分割
-            minSize: 30000, // 引入的包大于80KB才做代码分割
+            minSize: 30000, // 引入的包大于30KB才做代码分割
             maxSize: 0, // 限制包的大小
             minChunks: 1, // 当一个包至少被用了多少次的时候才进行代码分割
             maxAsyncRequests: 5, // 同时加载的模块数最多是5个
@@ -88,6 +96,11 @@ module.exports = {
         ]
     },
     plugins: [
+        // 定义变量
+        new webpack.DefinePlugin({
+            // 运行编译命令时传入，用于node服务启动时获取不同配置
+            'process.env.BUILD_ENV': JSON.stringify(process.env.BUILD_ENV)
+        }),
         /****   使用HappyPack实例化    *****/
         new HappyPack({
             id: 'ts-lint-pack',

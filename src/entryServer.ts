@@ -1,18 +1,18 @@
-import Koa, {Context, Next} from 'koa';
+import Koa, { Context, Next } from 'koa';
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import helmet from 'koa-helmet';
 import koaStatic from 'koa-static';
 import favicon from 'koa-favicon';
-import RouterMain from './router';
-import interceptorMain from './interceptor';
-import {Config} from './Config';
 
-function linkStart() {
+import Config from '@@/config';
+import RouterMain from '@/router';
+import interceptorMain from '@/interceptor';
+
+function linkStart () {
     // 创建一个Koa对象表示web app本身:d
     const app = new Koa();
     const router = new Router();
-
     // 静态资源暴露 todo
     app.use(koaStatic('./static', {
         // 默认为true  访问的文件为index.html  可以修改为别的文件名或者false
@@ -20,15 +20,15 @@ function linkStart() {
         // 是否同意传输隐藏文件
         hidden: false,
         // 如果为true，则在返回next()之后进行服务，从而允许后续中间件先进行响应
-        defer: true,
+        defer: true
     }));
     // 设置图标
     app.use(favicon('/images/favicon.ico'));
     // 安全处理
     // app.use(helmet());
     // 设置Content Security Policy，防止XSS攻击。
-    // app.use(helmet.contentSecurityPolicy());
-    // app.use(helmet.dnsPrefetchControl());
+    app.use(helmet.contentSecurityPolicy());
+    app.use(helmet.dnsPrefetchControl());
     app.use(helmet.expectCt());
     app.use(helmet.frameguard());
     app.use(helmet.hidePoweredBy());
@@ -50,11 +50,12 @@ function linkStart() {
     app.use(router.allowedMethods());
     // 应用级错误捕获
     app.on('error', (err: Error, ctx: Context) => {
-        console.log('Error starting server', err);
+        console.log(`${process.env.BUILD_ENV}服务启动失败`, err);
     });
-    // 在端口3000监听:
-    app.listen(Config.PORT, () => {
-        console.log(`app started at port ${Config.PORT} ====`);
+    console.log('Node服务中环境标识和配置', process.env.BUILD_ENV, Config);
+    // 端口监听
+    app.listen(Config.common.port, Config.common.host, () => {
+        console.log(`${process.env.BUILD_ENV}服务启动成功${Config.common.host}:${ Config.common.port }`);
     });
 }
 

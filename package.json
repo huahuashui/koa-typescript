@@ -8,9 +8,10 @@
     ],
     "scripts": {
         "init": "yarn || npm i",
-        "build": "rimraf dist && cross-env NODE_ENV=development && webpack --config build/webpack.build.js",
-        "start": "npm run build && node ./dist/entryServer.js",
-        "dev": "nodemon --watch src -e ts && npm run build && nodemon ./dist/entryServer.js"
+        "local-build": "rimraf dist && cross-env NODE_ENV=development BUILD_ENV=local webpack --config build/webpack.build.js",
+        "dev-build": "rimraf dist && cross-env NODE_ENV=development BUILD_ENV=dev webpack --config build/webpack.build.js",
+        "local": "nodemon --watch src -e ts && npm run local-build && nodemon ./dist/entryServer.js",
+        "dev": "npm run dev-build && node ./dist/entryServer.js"
     },
     "dependencies": {
         "agentkeepalive": "^4.1.4",

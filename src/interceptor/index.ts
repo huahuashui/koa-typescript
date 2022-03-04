@@ -30,7 +30,7 @@ export default class InterceptorMain {
 
     private activate(app: Koa): void {
         app.use(async (ctx: Context, next: Next) => {
-            console.log(`拦截器start ${ctx.request.method} ${ctx.request.url}...`);
+            console.log(`Node-HTTP 请求start ${ctx.request.method} ${ctx.request.url}...`);
             await next();
         });
     }

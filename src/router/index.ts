@@ -1,5 +1,5 @@
 import Router from "koa-router";
-import UserRouter from "./userRouter";
+import UserRouter from "@/router/userRouter";
 
 // 加载路由配置
 export default class RouterMain {

@@ -1,4 +1,4 @@
-import {HttpUtil} from "../utils/HttpUtil";
+import axios from "@/utils/axios";
 
 export default class UserService {
 
@@ -32,6 +32,14 @@ export default class UserService {
             // 层级深度
             level: 2
         }
-        return await HttpUtil.post('/market/nodeManage/getChildNodeBySiteAndTemrinal', params);
+        return await axios.post('/market/nodeManage/getChildNodeBySiteAndTemrinal', params);
+    }
+
+    // 测试数据请求
+    public async getJavaData1(): Promise<any> {
+        const params = {
+            goodsId: 'awbg78ut90og'
+        }
+        return await axios.get('/goods/get/recommend', params);
     }
 }
