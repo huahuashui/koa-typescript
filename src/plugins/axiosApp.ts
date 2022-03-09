@@ -16,7 +16,7 @@ const axiosInstance = axios.create({
 });
 // 添加一个请求拦截器
 axiosInstance.interceptors.request.use((axiosConfig) => {
-    console.log('HTTP正常请求');
+    console.log('HTTP正常请求', axiosConfig.baseURL, axiosConfig.url);
     // 在请求发出之前进行一些操作-追加请求头
     // axiosConfig.headers = '123';
     return Promise.resolve(axiosConfig);
@@ -70,7 +70,7 @@ axiosInstance.interceptors.response.use((response) => {
             `Response-success，Node错误捕获，${ err.message }`
         );
     }
-    return Promise.resolve({ body: bodyResult, config: response.config });
+    return Promise.resolve(bodyResult);
 }, (error) => {
     console.error('HTTP错误响应');
     // http 状态码不符合validateStatus都会进来这里

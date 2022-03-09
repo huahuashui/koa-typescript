@@ -63,7 +63,7 @@ export default class NodeHttp {
         const startTime = new Date().getTime();
         return new Promise((resolve, reject) => {
             const linkUrl = `${ NodeHttp.baseURL }${ url }`;
-            axiosInstance.post<any, IResponseBody<T>>(url, params, axiosConfig)
+            axiosInstance.post<any, IResponseBody<T>>(linkUrl, params, axiosConfig)
                          .then((body) => {
                              const endTime = new Date().getTime();
                              // 记录日志
