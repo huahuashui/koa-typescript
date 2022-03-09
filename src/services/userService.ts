@@ -1,4 +1,4 @@
-import axiosApp from "@/plugins/axiosApp";
+import NodeHttp from "@/utils/NodeHttp";
 
 export default class UserService {
 
@@ -32,8 +32,8 @@ export default class UserService {
             // 层级深度
             level: 1
         }
-        return await axiosApp.post('/market/nodeManage/getChildNodeBySiteAndTemrinal11', params);
-        //  return await axiosApp.post('/user/getUserInfo', params);
+        return await NodeHttp.post('/market/nodeManage/getChildNodeBySiteAndTemrinal11', params);
+        //  return await NodeHttp.post('/user/getUserInfo', params);
     }
 
     // 测试数据请求
@@ -41,6 +41,6 @@ export default class UserService {
         const params = {
             goodsId: 'awbg78ut90og'
         }
-        return await axiosApp.get('/goods/get/recommend', params);
+        return await NodeHttp.get('/goods/get/recommend', params);
     }
 }

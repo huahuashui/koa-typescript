@@ -4,16 +4,6 @@ import Config from '@@/config/index';
 import { CustomResponse } from '@/constructors/CustomResponse';
 import ErrorCode from '@/enum/ErrorCode';
 import AgentKeepaliveApp from '@/plugins/AgentkeepaliveApp';
-import log4jsApp, { ILogMessage } from '@/plugins/log4jsApp';
-
-// 自定义axios响应数据
-interface ICustomAxiosResponse<T = any> {
-    body: IResponseBody<T>,
-    config: AxiosRequestConfig
-}
-
-// 日志
-const Logger = log4jsApp.getLogger('BACK-HTTP');
 // axios实例化
 const axiosInstance = axios.create({
     timeout: Config.common.timeout,
@@ -123,113 +113,9 @@ axiosInstance.interceptors.response.use((response) => {
     }
     return Promise.reject(bodyResult);
 });
-// 请求工具方法
-export default class HttpUtil {
-    // 根据不同环境获取后台接口服务器地址
-    // @ts-ignore
-    public static baseURL = Config[process.env.BUILD_ENV].serverUrl;
-
-    /**
-     * get请求
-     * @param url       请求地址
-     * @param params    请求参数
-     * @param axiosConfig    请求配置
-     */
-    public static get<T = any> (url: string, params: object, axiosConfig?: AxiosRequestConfig): Promise<IResponseBody<T>> {
-        const startTime = new Date().getTime();
-        return new Promise((resolve, reject) => {
-            const linkUrl = `${ HttpUtil.baseURL }${ url }`;
-            axiosInstance.get<any, IResponseBody<T>>(linkUrl, { ...axiosConfig, params })
-                         .then((body) => {
-                             const endTime = new Date().getTime();
-                             // 记录日志
-                             HttpUtil.loggerByCode({
-                                 method: 'GET',
-                                 url: linkUrl,
-                                 params,
-                                 duration: endTime - startTime,
-                                 code: body.code,
-                                 message: body.message
-                             });
-                             // 数据返回
-                             resolve(body);
-                         })
-                         .catch((body) => {
-                             const endTime = new Date().getTime();
-                             // 记录日志
-                             HttpUtil.loggerByCode({
-                                 method: 'GET',
-                                 url: linkUrl,
-                                 params,
-                                 duration: endTime - startTime,
-                                 code: body.code,
-                                 message: body.message
-                             });
-                             // 数据返回
-                             resolve(body);
-                         });
-        });
-    }
-
-    /**
-     * post请求
-     * @param url       请求地址
-     * @param params    请求参数
-     * @param axiosConfig    请求配置
-     */
-    public static post<T = any> (url: string, params: object, axiosConfig?: AxiosRequestConfig): Promise<IResponseBody<T>> {
-        const startTime = new Date().getTime();
-        return new Promise((resolve, reject) => {
-            const linkUrl = `${ HttpUtil.baseURL }${ url }`;
-            axiosInstance.post<any, IResponseBody<T>>(url, params, axiosConfig)
-                         .then((body) => {
-                             const endTime = new Date().getTime();
-                             // 记录日志
-                             HttpUtil.loggerByCode({
-                                 method: 'POST',
-                                 url: linkUrl,
-                                 params,
-                                 duration: endTime - startTime,
-                                 code: body.code,
-                                 message: body.message
-                             });
-                             // 数据返回
-                             resolve(body);
-                         })
-                         .catch((body) => {
-                             const endTime = new Date().getTime();
-                             // 记录日志
-                             HttpUtil.loggerByCode({
-                                 method: 'POST',
-                                 url: linkUrl,
-                                 params,
-                                 duration: endTime - startTime,
-                                 code: body.code,
-                                 message: body.message
-                             });
-                             // 数据返回
-                             resolve(body);
-                         });
-        });
-    }
-
-    // 日志打印
-    private static loggerByCode (logMessage: ILogMessage) {
-        const code = logMessage.code;
-        // 日志记录
-        if (code === ErrorCode.OK || code === ErrorCode.JAVA_OK) {
-            // 成功响应
-            Logger.info(logMessage);
-        } else if (
-            code === ErrorCode.ERROR || code === ErrorCode.NODE_ERROR || code === ErrorCode.NODE_JAVA_ERROR ||
-            code === ErrorCode.JAVA_ERROR || code === ErrorCode.JAVA_SERVER_STOP
-        ) {
-            // 错误响应
-            Logger.error(logMessage);
-        } else {
-            // 其他响应
-            Logger.warn(logMessage);
-        }
-    }
-}
-
+export {
+    AxiosRequestConfig,
+    AxiosResponse,
+    AxiosError,
+    axiosInstance
+};
