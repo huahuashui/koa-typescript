@@ -17,7 +17,7 @@ module.exports = {
     // 本地环境
     local: {
         // 日志存放目录
-        logPath: '/logs',
+        logPath: './logs',
         // 后台服务地址
         serverUrl: "https://test-office.iask.com/gateway"
     },

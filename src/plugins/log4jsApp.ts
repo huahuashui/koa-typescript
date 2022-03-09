@@ -3,8 +3,9 @@ import log4js, { Configuration } from 'log4js';
 import Config from '@@/config/index';
 // @ts-ignore
 const EnvConfig = Config[process.env.BUILD_ENV];
+console.log(111, EnvConfig.logPath);
 // 日志级别
-const levels = {
+const Levels = {
     'trace': 'TRACE',
     'debug': 'DEBUG',
     'info': 'INFO',
@@ -39,12 +40,12 @@ const log4jsLogger = log4js.configure({
         justErrors: {
             type: 'logLevelFilter',
             appender: 'emergencies',
-            level: levels.error
+            level: Levels.error
         }
     },
     categories: {
         default: {
-            appenders: [ 'out', 'justErrors', 'access' ], level: levels.info
+            appenders: [ 'out', 'justErrors', 'access' ], level: Levels.info
         }
     },
     replaceConsole: false,

@@ -16,12 +16,12 @@ const axiosInstance = axios.create({
 });
 // 添加一个请求拦截器
 axiosInstance.interceptors.request.use((axiosConfig) => {
-    console.log('HTTP正常请求', axiosConfig.url);
+    console.log('HTTP正常请求');
     // 在请求发出之前进行一些操作-追加请求头
     // axiosConfig.headers = '123';
     return Promise.resolve(axiosConfig);
 }, (error) => {
-    console.error('HTTP错误请求', error);
+    console.error('HTTP错误请求');
     // 这里极少情况会进来，暂时没有找到主动触发的方法
     return Promise.reject(new CustomResponse(
         ErrorCode.NODE_JAVA_ERROR,
@@ -31,7 +31,7 @@ axiosInstance.interceptors.request.use((axiosConfig) => {
 });
 // 添加一个响应拦截器
 axiosInstance.interceptors.response.use((response) => {
-    console.log('HTTP正常响应', response);
+    console.log('HTTP正常响应');
     // 通过 validateStatus 配置进到来的 http status
     let bodyResult: IResponseBody = null;
     try {
@@ -72,7 +72,7 @@ axiosInstance.interceptors.response.use((response) => {
     }
     return Promise.resolve({ body: bodyResult, config: response.config });
 }, (error) => {
-    console.error('HTTP错误响应', !!error.response, !!error.request, axios.isCancel(error));
+    console.error('HTTP错误响应');
     // http 状态码不符合validateStatus都会进来这里
     // 取消请求也会进入这里，可以用 axios.isCancel(error) 来判断是否是取消请求
     // 请求运行有异常也会进入这里，如故意将 headers 写错：axios.defaults.headers = '123'
@@ -80,7 +80,6 @@ axiosInstance.interceptors.response.use((response) => {
     let bodyResult: IResponseBody = null;
     if (error.response) {
         // 请求已发出，服务器返回的 http 状态码未通过validateStatus方法校验
-        console.error('HTTP错误响应-1');
         bodyResult = new CustomResponse(
             ErrorCode.NODE_JAVA_ERROR,
             null,
@@ -88,7 +87,6 @@ axiosInstance.interceptors.response.use((response) => {
         );
     } else if (error.request) {
         // 请求已发出，但没有收到响应，例如：断网
-        console.error('HTTP错误响应-2');
         bodyResult = new CustomResponse(
             ErrorCode.NODE_JAVA_ERROR,
             null,
@@ -96,7 +94,6 @@ axiosInstance.interceptors.response.use((response) => {
         );
     } else {
         // 请求被取消或者发送请求时异常
-        console.error('HTTP错误响应-3', error);
         if (axios.isCancel(error)) {
             bodyResult = new CustomResponse(
                 ErrorCode.NODE_ERROR,
