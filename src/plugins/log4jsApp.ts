@@ -1,8 +1,8 @@
 import { Context, Next } from 'koa';
-import log4js, { Configuration, Log4js } from 'log4js';
-import config from '@@/config/index';
+import log4js, { Configuration } from 'log4js';
+import Config from '@@/config/index';
 // @ts-ignore
-const envConfig = config[process.env.BUILD_ENV];
+const EnvConfig = Config[process.env.BUILD_ENV];
 // 日志级别
 const levels = {
     'trace': 'TRACE',
@@ -22,7 +22,7 @@ const log4jsLogger = log4js.configure({
         // 所有日志记录
         access: {
             type: 'dateFile',
-            filename: `${ envConfig.logPath }/access`,
+            filename: `${ EnvConfig.logPath }/access`,
             pattern: 'yyyy-MM-dd.log',
             numBackups: 7,
             alwaysIncludePattern: true
@@ -30,7 +30,7 @@ const log4jsLogger = log4js.configure({
         // 错误日志过滤器使用
         emergencies: {
             type: 'dateFile',
-            filename: `${ envConfig.logPath }/error`,
+            filename: `${ EnvConfig.logPath }/error`,
             pattern: 'yyyy-MM-dd.log',
             numBackups: 7,
             alwaysIncludePattern: true
