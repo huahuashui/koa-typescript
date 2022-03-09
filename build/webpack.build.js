@@ -6,6 +6,7 @@ const HappyPack = require('happypack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
+const NodemonPlugin = require('nodemon-webpack-plugin');
 // 不同环境配置
 const config = require('../config');
 // ts配置
@@ -21,8 +22,8 @@ module.exports = {
     output: {
         path: path.resolve(process.cwd(), './dist/'),
         publicPath: '/',
-        filename: '[name].js',
-        chunkFilename: '[name].[chunkhash:7].js'
+        filename: 'server.js',
+        chunkFilename: 'server.[chunkhash:7].js'
     },
     resolve: {
         extensions: ['.js', '.json', '.ts', 'tsx'],
@@ -139,7 +140,16 @@ module.exports = {
         }),
         new webpack.HashedModuleIdsPlugin(),
         new webpack.optimize.ModuleConcatenationPlugin(),
-        new ProgressBarPlugin()
+        new ProgressBarPlugin(),
+        new NodemonPlugin({
+            script: './dist/server.js',
+            watch: path.resolve('./dist'),
+            // Extensions to watch.
+            ext: 'ts,tsx,js,json',
+            // Unlike the cli option, delay here is in milliseconds (also note that it's a string).
+            // Here's 1 second delay:
+            // delay: '1000',
+        })
     ],
     devtool: 'cheap-module-inline-source-map'
 };

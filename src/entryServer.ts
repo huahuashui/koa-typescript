@@ -7,13 +7,13 @@ import favicon from 'koa-favicon';
 import config from '@@/config';
 import RouterMain from '@/router';
 import interceptorMain from '@/interceptor';
-import customLog4js from '@/customLog4js';
+import log4jsApp from '@/plugins/log4jsApp';
 
 function linkStart () {
     // 创建一个Koa对象
     const app = new Koa();
     const router = new Router();
-    const appLogger = customLog4js.getLogger('APP');
+    const appLogger = log4jsApp.getLogger('APP');
     // 静态资源暴露 todo
     app.use(koaStatic('./static', {
         // 默认为true  访问的文件为index.html  可以修改为别的文件名或者false

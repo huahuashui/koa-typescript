@@ -1,9 +1,11 @@
 import Koa, { Context, Next } from 'koa';
-import customLog4js from '@/customLog4js';
+import log4jsApp from '@/plugins/log4jsApp';
 
 export default class InterceptorMain {
     // 忽略不拦截的请求
-    private static IGNORE_URL_List: string[] = [];
+    private static IGNORE_URL_List: string[] = [
+
+    ];
 
     /**
      * 是否忽略
@@ -25,7 +27,7 @@ export default class InterceptorMain {
     }
 
     private static activate (app: Koa): void {
-        app.use(customLog4js.connectLogger(customLog4js.getLogger('NODE-HTTP')));
+        app.use(log4jsApp.connectLogger(log4jsApp.getLogger('NODE-HTTP')));
     }
 
     constructor (app: Koa) {

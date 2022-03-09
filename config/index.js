@@ -19,20 +19,20 @@ module.exports = {
         // 日志存放目录
         logPath: '/logs',
         // 后台服务地址
-        serverUrl: "https://test-office.iask.com/gateway",
+        serverUrl: "https://test-office.iask.com/gateway"
     },
     // 开发环境
     dev: {
         // 日志存放目录
-        logPath: '/data/logs/koa-typescript/',
+        logPath: '/data/logs/koa-typescript',
         // 后台服务地址
-        serverUrl: "https://test-office.iask.com/gateway",
+        serverUrl: "https://test-office.iask.com/gateway"
     },
     // 测试环境
     test: {
         // 日志存放目录
-        logPath: '/data/logs/koa-typescript/',
+        logPath: '/data/logs/koa-typescript',
         // 后台服务地址
-        serverUrl: "https://test-office.iask.com/gateway",
+        serverUrl: "https://test-office.iask.com/gateway"
     },
 }

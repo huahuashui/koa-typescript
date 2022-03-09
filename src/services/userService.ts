@@ -1,4 +1,4 @@
-import axios from "@/utils/axios";
+import axiosApp from "@/plugins/axiosApp";
 
 export default class UserService {
 
@@ -30,9 +30,10 @@ export default class UserService {
             // 站点：办公-0 教育-1 建筑-2 全站-3 主站-4 合同站-5 ppt站-6 合同通-7
             site: 7,
             // 层级深度
-            level: 2
+            level: 1
         }
-        return await axios.post('/market/nodeManage/getChildNodeBySiteAndTemrinal', params);
+        return await axiosApp.post('/market/nodeManage/getChildNodeBySiteAndTemrinal11', params);
+        //  return await axiosApp.post('/user/getUserInfo', params);
     }
 
     // 测试数据请求
@@ -40,6 +41,6 @@ export default class UserService {
         const params = {
             goodsId: 'awbg78ut90og'
         }
-        return await axios.get('/goods/get/recommend', params);
+        return await axiosApp.get('/goods/get/recommend', params);
     }
 }

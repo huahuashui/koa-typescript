@@ -120,6 +120,7 @@ export default {
     // 请求拦截处理-记录响应时间
     connectLogger (logger: ILogger) {
         return async function (ctx: Context, next: Next) {
+            logger.info(`${ ctx.req.url } **************************************请求开始**************************************`);
             const startTime = new Date().getTime();
             // 监听响应结束
             ctx.res.on('finish', () => {

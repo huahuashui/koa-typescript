@@ -1,7 +1,7 @@
 import { Context, Next } from 'koa';
 import ErrorCode from '@/enum/ErrorCode';
-import { CustomResponse } from '@/utils/CustomResponse';
-import UserService from '@/service/userService';
+import { CustomResponse } from '@/constructors/CustomResponse';
+import UserService from '@/services/userService';
 
 export default class UserController {
     public static service = new UserService();

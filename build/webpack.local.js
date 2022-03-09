@@ -6,38 +6,42 @@ const HappyPack = require('happypack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
-const config = require('../config');
+// 监听文件变化-重新编译后-重新启动Node服务
+const NodemonPlugin = require('nodemon-webpack-plugin');
+
 const tsConfig = require.resolve('../tsconfig.json');
 
 module.exports = {
     mode: 'production',
+    watch: true,
+    watchOptions: {
+        aggregateTimeout: 1000,
+        poll: 1000,
+        // 忽略目录
+        ignored: ['**/node_modules', '**/dist', '**/build', '**/logs'],
+        stdin: true
+    },
     entry: {
         entryServer: './src/entryServer.ts',
     },
     output: {
-        path: path.resolve(process.cwd(), './dist/server/'),
+        path: path.resolve(process.cwd(), './dist/'),
         publicPath: '/',
-        filename: path.posix.join('js', '[name].[hash:7].js'),
-        chunkFilename: path.posix.join('js', '[name].[chunkhash:7].js'),
+        filename: 'server.js',
+        chunkFilename: 'server.[chunkhash:7].js'
     },
     resolve: {
         extensions: ['.js', '.json', '.ts', 'tsx'],
         alias: {
-            // ...config.alias,
+            // 根目录
+            '@@': path.resolve(__dirname, '../'),
+            // src目录
+            '@': path.resolve(__dirname, '../src')
         },
     },
     externals: nodeExternals(),
     optimization: {
-        minimize: false,
-        minimizer: [
-            // new TerserPlugin({
-            //     terserOptions: {
-            //         output: {
-            //             comments: false
-            //         }
-            //     }
-            // })
-        ]
+        minimize: false
     },
     performance: {
         hints: false
@@ -66,6 +70,11 @@ module.exports = {
         ]
     },
     plugins: [
+        // 定义变量
+        new webpack.DefinePlugin({
+            // 运行编译命令时传入，用于node服务启动时获取不同配置
+            'process.env.BUILD_ENV': JSON.stringify(process.env.BUILD_ENV)
+        }),
         /****   使用HappyPack实例化    *****/
         new HappyPack({
             id: 'ts-lint-pack',
@@ -105,6 +114,10 @@ module.exports = {
         new webpack.HashedModuleIdsPlugin(),
         new webpack.optimize.ModuleConcatenationPlugin(),
         new ProgressBarPlugin(),
+        new NodemonPlugin({
+            script: './dist/server.js',
+            watch: path.resolve('./dist')
+        })
     ],
-    devtool: 'cheap-module-inline-source-map'
+    devtool: 'eval-source-map'
 };
