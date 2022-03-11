@@ -3,7 +3,7 @@ import log4js, { Configuration } from 'log4js';
 import Config from '@@/config/index';
 // @ts-ignore
 const EnvConfig = Config[process.env.BUILD_ENV];
-console.log(111, EnvConfig.logPath);
+
 // 日志级别
 const Levels = {
     'trace': 'TRACE',

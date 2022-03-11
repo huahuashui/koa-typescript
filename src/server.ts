@@ -1,4 +1,4 @@
-import Koa, { Context, Next } from 'koa';
+import Koa, { Context } from 'koa';
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import helmet from 'koa-helmet';
@@ -14,7 +14,7 @@ function linkStart () {
     const app = new Koa();
     const router = new Router();
     const appLogger = log4jsApp.getLogger('APP');
-    // 静态资源暴露 todo
+    // 静态资源暴露
     app.use(koaStatic('./static', {
         // 默认为true  访问的文件为index.html  可以修改为别的文件名或者false
         index: false,
@@ -24,11 +24,11 @@ function linkStart () {
         defer: true
     }));
     // 设置图标
-    app.use(favicon('/images/favicon.ico'));
+    app.use(favicon('/favicon.ico'));
     // 安全处理
     // app.use(helmet());
-    // 设置Content Security Policy，防止XSS攻击。
-    app.use(helmet.contentSecurityPolicy());
+    // 设置只能https请求
+    // app.use(helmet.contentSecurityPolicy());
     app.use(helmet.dnsPrefetchControl());
     app.use(helmet.expectCt());
     app.use(helmet.frameguard());
@@ -55,7 +55,7 @@ function linkStart () {
     // 端口监听
     app.listen(config.common.port, config.common.host, () => {
         appLogger.info({
-            message: `Node启动成功${ process.env.BUILD_ENV }: ${ config.common.host }:${ config.common.port }`
+            message: `Node启动成功${__dirname}==${ process.env.BUILD_ENV }: ${ config.common.host }:${ config.common.port }`
         });
     });
 }

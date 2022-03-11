@@ -5,14 +5,17 @@ const TerserPlugin = require('terser-webpack-plugin');
 const HappyPack = require('happypack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const nodeExternals = require('webpack-node-externals');
+
 // 监听文件变化-重新编译后-重新启动Node服务
 const NodemonPlugin = require('nodemon-webpack-plugin');
 
+const buildConfig = require('../config/build-config');
 const tsConfig = require.resolve('../tsconfig.json');
 
 module.exports = {
     mode: 'production',
+    target: 'node',
+    // 监听文件变化，触发编译
     watch: true,
     watchOptions: {
         aggregateTimeout: 1000,
@@ -22,24 +25,19 @@ module.exports = {
         stdin: true
     },
     entry: {
-        entryServer: './src/entryServer.ts',
+        server: './src/server.ts',
     },
     output: {
         path: path.resolve(process.cwd(), './dist/'),
         publicPath: '/',
-        filename: 'server.js',
-        chunkFilename: 'server.[chunkhash:7].js'
+        filename: '[name].js',
+        chunkFilename: '[name].js',
     },
     resolve: {
         extensions: ['.js', '.json', '.ts', 'tsx'],
-        alias: {
-            // 根目录
-            '@@': path.resolve(__dirname, '../'),
-            // src目录
-            '@': path.resolve(__dirname, '../src')
-        },
+        alias: buildConfig.alias,
     },
-    externals: nodeExternals(),
+    externals: buildConfig.externals,
     optimization: {
         minimize: false
     },

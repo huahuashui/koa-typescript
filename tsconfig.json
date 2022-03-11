@@ -1,9 +1,14 @@
 {
     "include": [
-        "src/**/*.ts"
+        "src/**/*.ts",
+        "types/**/*.ts"
     ],
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "dist",
+        "logs",
+        "build",
+        "config"
     ],
     "compilerOptions": {
         "removeComments": true,
